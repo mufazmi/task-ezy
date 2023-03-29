@@ -31,7 +31,7 @@ class AuthController {
                 return next(error_handler_1.default.forbidden(messages_1.default.AUTH.ACCOUNT_ALREADY_REGISTERED));
             const register = yield user_service_1.default.createUser(body);
             const otp = otp_service_1.default.generateOtp();
-            const otpRes = yield otp_service_1.default.createOtp({ otp: '234233', user_id: register.id, type: constants_1.default.OTP_TYPE.MOBILE_VERIFICATION });
+            const otpRes = yield otp_service_1.default.createOtp({ otp: otp, user_id: register.id, type: constants_1.default.OTP_TYPE.MOBILE_VERIFICATION });
             yield sms_service_1.default.sendOtp({ mobile: body.mobile, otp: otp });
             return register ? (0, response_1.default)({ res, message: messages_1.default.AUTH.ACCOUNT_CREATED }) : next(error_handler_1.default.serverError());
         });
