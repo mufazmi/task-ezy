@@ -15,7 +15,7 @@ const app:Application = express()
 app.use(express.json())
 
 //Cookie Parser Middleware
-app.use(cookieParser);
+// app.use(cookieParser);
 
 //Routes
 import authRoute from './routes/auth-route';

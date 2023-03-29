@@ -4,7 +4,7 @@ import bcrypt from 'bcrypt';
 
 class UserService{
 
-    createUser = async (data:InferCreationAttributes<User>) : Promise<InferAttributes<User>> => await User.create(data);
+    createUser = async (data:InferCreationAttributes<User>) => await User.create(data);
 
     findUser = async (filter:any) => await User.findOne({where:filter});
 

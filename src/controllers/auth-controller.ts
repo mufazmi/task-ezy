@@ -10,6 +10,8 @@ import UserDto from '../dtos/user-dto';
 import Constants from '../utils/constants';
 import smsService from '../services/sms-service';
 import Otp from '../models/otp-model';
+import User from '../models/user-model';
+import { Op } from 'sequelize';
 
 class AuthController {
 
@@ -17,11 +19,10 @@ class AuthController {
         const body = await authValidation.register.validateAsync(req.body);
         const user = await userService.findUser({ mobile: body.mobile })
         if (user)
-            return next(ErrorHandler.notFound(Messages.AUTH.ACCOUNT_ALREADY_REGISTERED))
+            return next(ErrorHandler.forbidden(Messages.AUTH.ACCOUNT_ALREADY_REGISTERED))
         const register = await userService.createUser(body);
         const otp = otpService.generateOtp();
-        const otpRes = await otpService.createOtp({otp:'34234'});
-        otpRes.setUser(register.id)
+        const otpRes = await otpService.createOtp({otp:'234233',user_id:register.id,type:Constants.OTP_TYPE.MOBILE_VERIFICATION});
         await smsService.sendOtp({mobile:body.mobile,otp:otp});
         return register ? responseSuccess({ res, message: Messages.AUTH.ACCOUNT_CREATED }) : next(ErrorHandler.serverError());
     }
@@ -62,7 +63,7 @@ class AuthController {
         if (!user)
             return next(ErrorHandler.notFound(Messages.AUTH.ACCOUNT_NOT_FOUND))
 
-        const otp = await otpService.findOtp({ user_id: user.id, otp: body.otp, type: Constants.OTP_TYPE.MOBILE_VERIFICATION });
+        const otp = await otpService.verifyOtp({ user_id: user.id, otp: body.otp, type: Constants.OTP_TYPE.MOBILE_VERIFICATION });
         if (!otp)
             return next(ErrorHandler.forbidden(Messages.AUTH.INVALID_OTP))
 

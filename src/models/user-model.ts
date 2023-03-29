@@ -1,7 +1,7 @@
-import { Model,InferAttributes,InferCreationAttributes,DataTypes,CreationOptional, Sequelize } from "sequelize";
+import { Model, InferAttributes, InferCreationAttributes, DataTypes, CreationOptional, Sequelize, HasManyAddAssociationMixin, HasManySetAssociationsMixin } from 'sequelize';
 import db from "../configs/db/db";
 import bcrypt from 'bcrypt';
-import Otp from "./otp-model";
+import Otp from './otp-model';
 
 class User extends Model<InferAttributes<User>,InferCreationAttributes<User>>{
 
@@ -10,6 +10,8 @@ class User extends Model<InferAttributes<User>,InferCreationAttributes<User>>{
     declare mobile: string
     declare password:string
     declare isPhoneVerified:boolean
+    declare createOtp: HasManyAddAssociationMixin<Otp, 'user_id'>;
+    declare setUser: HasManySetAssociationsMixin<Otp, string>;
 }
 
 User.init({
@@ -50,6 +52,6 @@ User.beforeCreate((user)=>{
 })
 
 
-User.hasMany(Otp);
+User.hasMany(Otp,{sourceKey:'id',foreignKey:'user_id',as:'otps'});
 
 export default User
