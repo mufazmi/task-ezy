@@ -8,6 +8,8 @@ import otpService from '../services/otp-service';
 import tokenService from '../services/token-service';
 import UserDto from '../dtos/user-dto';
 import Constants from '../utils/constants';
+import smsService from '../services/sms-service';
+import Otp from '../models/otp-model';
 
 class AuthController {
 
@@ -18,7 +20,9 @@ class AuthController {
             return next(ErrorHandler.notFound(Messages.AUTH.ACCOUNT_ALREADY_REGISTERED))
         const register = await userService.createUser(body);
         const otp = otpService.generateOtp();
-        // await otpService.createOtp({otp:otp,user_id:register});
+        const otpRes = await otpService.createOtp({otp:'34234'});
+        otpRes.setUser(register.id)
+        await smsService.sendOtp({mobile:body.mobile,otp:otp});
         return register ? responseSuccess({ res, message: Messages.AUTH.ACCOUNT_CREATED }) : next(ErrorHandler.serverError());
     }
 
@@ -62,6 +66,8 @@ class AuthController {
         if (!otp)
             return next(ErrorHandler.forbidden(Messages.AUTH.INVALID_OTP))
 
+        //  => otp expired validation
+
         if (!user.isPhoneVerified)
             await userService.updateUser({ mobile: user.mobile }, { isPhoneVerified: true });
 
@@ -90,7 +96,7 @@ class AuthController {
             return responseSuccess({ res, message: Messages.AUTH.LOGIN_SUCCESS, data: response })
         }
 
-        return responseSuccess({ res, message:Messages.AUTH.ACCOUNT_VERIFIED })
+        return responseSuccess({ res, message: Messages.AUTH.ACCOUNT_VERIFIED })
 
     }
 

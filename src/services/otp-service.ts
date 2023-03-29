@@ -6,7 +6,8 @@ class OtpService {
 
     generateOtp = (): string => crypto.randomInt(100000, 999999).toString();
 
-    createOtp = async (data:InferCreationAttributes<Otp>) => await Otp.create(data);
+    createOtp = async (data:any) => await Otp.create(data);
+    // createOtp = async (data:InferCreationAttributes<Otp>) => await Otp.create(data);
 
     findOtp = async (filter:any) => await Otp.findOne({where:filter});
 
