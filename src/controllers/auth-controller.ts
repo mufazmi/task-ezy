@@ -17,6 +17,14 @@ class AuthController{
         return register ? responseSuccess({res,message:Messages.USER.USER_CREATED}) : next(ErrorHandler.serverError());
     }
 
+    login = async (req:Request, res:Response, next:NextFunction) =>{
+        const body = await authValidation.login.validateAsync(req.body);
+        
+        const user = await userService.findUser({mobile:body.mobile})
+        if(!user)
+            return next(ErrorHandler.notFound(Messages.USER.USER_NOT_FOUND))
+    }
+
 }
 
 export default new AuthController

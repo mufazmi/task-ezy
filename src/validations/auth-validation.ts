@@ -8,6 +8,11 @@ class AuthValidation {
         password: Joi.string().min(8).max(50).required()
     });
 
+    login = Joi.object({
+        mobile : Joi.string().min(10).required(),
+        password: Joi.string().min(8).max(50).required()
+    });
+
 }
 
 export default new AuthValidation
