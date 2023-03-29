@@ -18,8 +18,15 @@ class OtpService {
     constructor() {
         this.generateOtp = () => crypto_1.default.randomInt(100000, 999999).toString();
         this.createOtp = (data) => __awaiter(this, void 0, void 0, function* () { return yield otp_model_1.default.create(data); });
-        // createOtp = async (data:InferCreationAttributes<Otp>) => await Otp.create(data);
         this.findOtp = (filter) => __awaiter(this, void 0, void 0, function* () { return yield otp_model_1.default.findOne({ where: filter }); });
+        this.destroyOtp = (filter) => __awaiter(this, void 0, void 0, function* () { return yield otp_model_1.default.destroy({ where: filter }); });
+        this.verifyOtp = (filter) => __awaiter(this, void 0, void 0, function* () {
+            const otp = yield otp_model_1.default.findOne({ where: filter });
+            // if otp expired
+            if (otp)
+                yield this.destroyOtp(filter);
+            return otp ? otp : false;
+        });
     }
 }
 exports.default = new OtpService;

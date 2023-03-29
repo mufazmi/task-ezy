@@ -31,5 +31,5 @@ Otp.init({
     timestamps: true,
     sequelize: db_1.default
 });
-// Otp.belongsTo(User);
+// Otp.belongsTo(User,{targetKey:'id'});
 exports.default = Otp;

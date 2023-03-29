@@ -28,11 +28,10 @@ class AuthController {
             const body = yield auth_validation_1.default.register.validateAsync(req.body);
             const user = yield user_service_1.default.findUser({ mobile: body.mobile });
             if (user)
-                return next(error_handler_1.default.notFound(messages_1.default.AUTH.ACCOUNT_ALREADY_REGISTERED));
+                return next(error_handler_1.default.forbidden(messages_1.default.AUTH.ACCOUNT_ALREADY_REGISTERED));
             const register = yield user_service_1.default.createUser(body);
             const otp = otp_service_1.default.generateOtp();
-            const otpRes = yield otp_service_1.default.createOtp({ otp: '34234' });
-            otpRes.setUser(register.id);
+            const otpRes = yield otp_service_1.default.createOtp({ otp: '234233', user_id: register.id, type: constants_1.default.OTP_TYPE.MOBILE_VERIFICATION });
             yield sms_service_1.default.sendOtp({ mobile: body.mobile, otp: otp });
             return register ? (0, response_1.default)({ res, message: messages_1.default.AUTH.ACCOUNT_CREATED }) : next(error_handler_1.default.serverError());
         });
@@ -64,7 +63,7 @@ class AuthController {
             const user = yield user_service_1.default.findUser({ mobile: body.mobile });
             if (!user)
                 return next(error_handler_1.default.notFound(messages_1.default.AUTH.ACCOUNT_NOT_FOUND));
-            const otp = yield otp_service_1.default.findOtp({ user_id: user.id, otp: body.otp, type: constants_1.default.OTP_TYPE.MOBILE_VERIFICATION });
+            const otp = yield otp_service_1.default.verifyOtp({ user_id: user.id, otp: body.otp, type: constants_1.default.OTP_TYPE.MOBILE_VERIFICATION });
             if (!otp)
                 return next(error_handler_1.default.forbidden(messages_1.default.AUTH.INVALID_OTP));
             //  => otp expired validation

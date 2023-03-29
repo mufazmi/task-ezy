@@ -16,7 +16,7 @@ const PORT = Number(process.env.PORT || 3000);
 const app = (0, express_1.default)();
 app.use(express_1.default.json());
 //Cookie Parser Middleware
-app.use(cookieParser);
+// app.use(cookieParser);
 //Routes
 const auth_route_1 = __importDefault(require("./routes/auth-route"));
 //Auth Route

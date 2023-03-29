@@ -44,5 +44,5 @@ User.beforeCreate((user) => {
     const salt = bcrypt_1.default.genSaltSync(3, 'a');
     user.password = bcrypt_1.default.hashSync(user.password, salt);
 });
-User.hasMany(otp_model_1.default);
+User.hasMany(otp_model_1.default, { sourceKey: 'id', foreignKey: 'user_id', as: 'otps' });
 exports.default = User;
