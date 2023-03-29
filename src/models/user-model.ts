@@ -1,10 +1,12 @@
 import { Model,InferAttributes,InferCreationAttributes,DataTypes,CreationOptional, Sequelize } from "sequelize";
 import db from "../configs/db/db";
+import bcrypt from 'bcrypt';
 
 class User extends Model<InferAttributes<User>,InferCreationAttributes<User>>{
 
     declare id:CreationOptional<string>
     declare name: string
+    declare mobile: string
     declare password:string
     declare isPhoneVerified:boolean
 }
@@ -18,7 +20,12 @@ User.init({
     },
     name:{
         type:DataTypes.STRING(100),
-        allowNull:true
+        allowNull:false
+    },
+    mobile:{
+        type:DataTypes.STRING(13),
+        allowNull:false,
+        unique:true
     },
     password:{
         type:DataTypes.STRING(200),
@@ -35,5 +42,10 @@ User.init({
     freezeTableName:true,
     sequelize:db
 });
+
+User.beforeCreate((user)=>{
+    const salt = bcrypt.genSaltSync(3,'a');
+    user.password = bcrypt.hashSync(user.password,salt);
+})
 
 export default User
