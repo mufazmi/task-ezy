@@ -22,7 +22,7 @@ class AuthController {
             return next(ErrorHandler.forbidden(Messages.AUTH.ACCOUNT_ALREADY_REGISTERED))
         const register = await userService.createUser(body);
         const otp = otpService.generateOtp();
-        const otpRes = await otpService.createOtp({otp:'234233',user_id:register.id,type:Constants.OTP_TYPE.MOBILE_VERIFICATION});
+        const otpRes = await otpService.createOtp({otp:otp,user_id:register.id,type:Constants.OTP_TYPE.MOBILE_VERIFICATION});
         await smsService.sendOtp({mobile:body.mobile,otp:otp});
         return register ? responseSuccess({ res, message: Messages.AUTH.ACCOUNT_CREATED }) : next(ErrorHandler.serverError());
     }
