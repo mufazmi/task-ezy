@@ -8,5 +8,7 @@ class OtpService {
 
     createOtp = async (data:InferCreationAttributes<Otp>) => await Otp.create(data);
 
+    findOtp = async (filter:any) => await Otp.findOne({where:filter});
+
 }
 export default new OtpService
