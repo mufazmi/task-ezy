@@ -1,0 +1,201 @@
+{
+	"info": {
+		"_postman_id": "5d55a846-c91c-4388-b932-c3ddf4fd96ce",
+		"name": "Auth",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "18266994"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":\"Umair Farooqui\",\r\n    \"mobile\":\"9867503256\",\r\n    \"password\":\"password\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3000/api/v1/auth/register",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test('Login Successfull',()=>{\r",
+							"    pm.expect(jsonData.success).is.true\r",
+							"    pm.environment.set('token',jsonData.data.accessToken)\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mobile\":\"9867503256\",\r\n    \"password\":\"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3000/api/v1/auth/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let jsonData = pm.response.json()\r",
+							"\r",
+							"pm.test('Login Successfull',()=>{\r",
+							"    pm.expect(jsonData.success).is.true\r",
+							"    pm.environment.set('accessToken',jsonData.data.accessToken)\r",
+							"    pm.environment.set('refreshToken',jsonData.data.refreshToken)\r",
+							"})\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"mobile\":\"9867503256\",\r\n    \"otp\":\"234233\",\r\n    \"token\":\"{{token}}\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:3000/api/v1/auth/verify",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"auth",
+						"verify"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SMS",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://182.18.143.11/api/mt/SendSMS?apikey=xzj3uC95O0qk5MxB6tO1Gg&senderid=EGPAID&channel=TRANS&DCS=0&flashs ms=0&number=9831693333&text=<#> EgPaid never calls you asking for OTP. Don't share your OTP with anyone. Your OTP is 4766 Valid for 3 min, ID:78799gdg&route=15&DLTTemplateId=1207161596306313471",
+					"protocol": "http",
+					"host": [
+						"182",
+						"18",
+						"143",
+						"11"
+					],
+					"path": [
+						"api",
+						"mt",
+						"SendSMS"
+					],
+					"query": [
+						{
+							"key": "apikey",
+							"value": "xzj3uC95O0qk5MxB6tO1Gg"
+						},
+						{
+							"key": "senderid",
+							"value": "EGPAID"
+						},
+						{
+							"key": "channel",
+							"value": "TRANS"
+						},
+						{
+							"key": "DCS",
+							"value": "0"
+						},
+						{
+							"key": "flashs ms",
+							"value": "0"
+						},
+						{
+							"key": "number",
+							"value": "9831693333"
+						},
+						{
+							"key": "text",
+							"value": "<"
+						}
+					],
+					"hash": "> EgPaid never calls you asking for OTP. Don't share your OTP with anyone. Your OTP is 4766 Valid for 3 min, ID:78799gdg&route=15&DLTTemplateId=1207161596306313471"
+				}
+			},
+			"response": []
+		}
+	]
+}
