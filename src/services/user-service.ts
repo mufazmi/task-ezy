@@ -5,7 +5,7 @@ class UserService{
 
     createUser = async (data:InferCreationAttributes<User>) => await User.create(data);
 
-    findUser = async (filter:any) => await User.findOne(filter);
+    findUser = async (filter:any) => await User.findOne({where:filter});
 
 }
 

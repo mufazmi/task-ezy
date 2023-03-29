@@ -16,8 +16,8 @@ class Constants{
         SERVER_ERROR:500
      }
 
-     static OTP_TYPE:{
-      MOBILE_VERIFICATION : 'mobile_verification'
+     static OTP_TYPE = {
+      MOBILE_VERIFICATION : 'mobile_verification',
       FORGOT_PASSWORD:'forgot_password'
      }
 

@@ -1,6 +1,7 @@
 import { Model,InferAttributes,InferCreationAttributes,DataTypes,CreationOptional, Sequelize } from "sequelize";
 import db from "../configs/db/db";
 import bcrypt from 'bcrypt';
+import Otp from "./otp-model";
 
 class User extends Model<InferAttributes<User>,InferCreationAttributes<User>>{
 
@@ -47,5 +48,8 @@ User.beforeCreate((user)=>{
     const salt = bcrypt.genSaltSync(3,'a');
     user.password = bcrypt.hashSync(user.password,salt);
 })
+
+
+User.hasMany(Otp);
 
 export default User

@@ -9,6 +9,7 @@ class Otp extends Model<InferAttributes<Otp>,InferCreationAttributes<Otp>> {
     declare type:string
     declare userId: ForeignKey<User['id']>
 }
+console.log(Constants)
 
 Otp.init({
     id:{

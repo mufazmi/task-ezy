@@ -4,6 +4,7 @@ import userService from '../services/user-service';
 import ErrorHandler from '../utils/error-handler';
 import Messages from '../utils/messages';
 import responseSuccess from '../utils/response';
+import otpService from '../services/otp-service';
 
 class AuthController{
 
@@ -13,7 +14,8 @@ class AuthController{
         if(user)
             return next(ErrorHandler.notFound(Messages.USER.USER_ALREADY_REGISTERED))
         const register = await userService.createUser(body);
-        
+        const otp = otpService.generateOtp();
+        await otpService.createOtp({otp:otp,userId:register});
         return register ? responseSuccess({res,message:Messages.USER.USER_CREATED}) : next(ErrorHandler.serverError());
     }
 
