@@ -13,7 +13,7 @@ const responseSuccess = ({res,message,data}:iResponseSuccess) =>{
         message
     }
     if(data)
-        Object.assign(payload,data)
+        Object.assign(payload,{data})
     
     return res.status(Constants.STATUS_CODE.SUCCESS).json(payload)
 }
